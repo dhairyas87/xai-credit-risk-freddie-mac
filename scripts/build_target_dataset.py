@@ -18,7 +18,7 @@ from src.target_generation import (
 )
 
 
-def build_dataset(
+def build_target_dataset(
     orig_path,
     perf_path,
     output_path
