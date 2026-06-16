@@ -406,7 +406,7 @@ Feature Engineering: COMPLETE
 
 Dataset Diagnostics: COMPLETE
 
-Feature Store: IN PROGRESS
+Feature Store: COMPLETE
 
 Modeling: NOT STARTED
 
