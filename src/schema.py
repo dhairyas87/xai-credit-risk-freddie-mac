@@ -23,14 +23,14 @@ ORIGINATION_COLUMNS = [
     "original_loan_term",
     "num_borrowers",
     "seller_name",
+    "servicer_name",
     "super_conforming_flag",
     "pre_harp_loan_sequence_number",
-    "special_eligibility_program",
+    "program_indicator",
     "harp_indicator",
     "property_valuation_method",
     "interest_only_indicator",
-    "mortgage_insurance_type",
-    "vantagescore_4"
+    "mortgage_insurance_cancellation_indicator"
 ]
 
 

@@ -1,130 +1,66 @@
-"""
-Project Pipeline Orchestrator
-
-Stages:
-
-1. target_generation
-2. feature_engineering
-
-Future:
-3. feature_store
-4. model_training
-5. explainability
-"""
-
-from pathlib import Path
-
-from scripts.build_target_dataset import (
-    build_target_dataset
-)
-
-from scripts.build_master_dataset import (
-    build_master_dataset
-)
-
+# scripts/pipeline.py
 
 PIPELINE_STAGES = [
-    "target_generation",
-    "feature_engineering"
+
+
+"target_generation",
+
+"feature_engineering",
+
+"combine_quarters",
+
+"feature_store",
+
+"model_training",
+
+"evaluation"
+
+
 ]
 
-
 def run_pipeline(
-    quarter: str,
-    start_stage: str = "target_generation",
-    force_rebuild: bool = False
+
+
+start_stage="target_generation",
+
+end_stage="evaluation",
+
+force_rebuild=False
+
+
 ):
-    """
-    Run pipeline from any stage.
 
-    Example:
 
-    run_pipeline(
-        quarter="2018Q1"
-    )
+stages = PIPELINE_STAGES
 
-    run_pipeline(
-        quarter="2018Q2",
-        start_stage="feature_engineering"
-    )
-    """
+start_idx = stages.index(
+    start_stage
+)
 
-    start_idx = PIPELINE_STAGES.index(
-        start_stage
-    )
+end_idx = stages.index(
+    end_stage
+)
 
-    stages_to_run = PIPELINE_STAGES[
-        start_idx:
-    ]
+stages_to_run = (
+    stages[start_idx:end_idx + 1]
+)
 
-    print("=" * 60)
-    print(f"RUNNING PIPELINE : {quarter}")
-    print("=" * 60)
+print(
+    f"Running: {stages_to_run}"
+)
 
-    raw_origination = (
-        f"../data/raw/historical_data_{quarter}.txt"
-    )
+if "combine_quarters" in stages_to_run:
 
-    raw_performance = (
-        f"../data/raw/historical_data_time_{quarter}.txt"
-    )
+    combine_quarters()
 
-    target_dataset = (
-        f"../data/processed/loan_perf_{quarter}.parquet"
-    )
+if "feature_store" in stages_to_run:
 
-    master_dataset = (
-        f"../data/processed/master_dataset_{quarter}.parquet"
-    )
+    build_feature_store()
 
-    # --------------------------------------------------
-    # TARGET GENERATION
-    # --------------------------------------------------
+if "model_training" in stages_to_run:
 
-    if "target_generation" in stages_to_run:
+    train_all_models()
 
-        if (
-            Path(target_dataset).exists()
-            and not force_rebuild
-        ):
-            print(
-                f"Target dataset already exists: {target_dataset}"
-            )
+if "evaluation" in stages_to_run:
 
-        else:
-
-            print("\nGenerating target dataset...")
-
-            build_target_dataset(
-                orig_path=raw_origination,
-                perf_path=raw_performance,
-                output_path=target_dataset
-            )
-
-    # --------------------------------------------------
-    # FEATURE ENGINEERING
-    # --------------------------------------------------
-
-    if "feature_engineering" in stages_to_run:
-
-        if (
-            Path(master_dataset).exists()
-            and not force_rebuild
-        ):
-            print(
-                f"Master dataset already exists: {master_dataset}"
-            )
-
-        else:
-
-            print(
-                "\nGenerating master dataset..."
-            )
-
-            build_master_dataset(
-                origination_path=raw_origination,
-                target_path=target_dataset,
-                output_path=master_dataset
-            )
-
-    print("\nPipeline completed.")
+    evaluate_all_models()

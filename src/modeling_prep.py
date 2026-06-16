@@ -37,7 +37,6 @@ LEAKAGE_COLUMNS = [
 ]
 
 DROP_COLUMNS = [
-    "special_eligibility_program",
     "pre_harp_loan_sequence_number",
     "postal_code"
 ]
