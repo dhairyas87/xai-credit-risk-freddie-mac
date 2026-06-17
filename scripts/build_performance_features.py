@@ -32,6 +32,16 @@ def build_performance_features(perf_df):
         perf_df["zero_balance_code"]
         .notna()
     ).astype(int)
+    
+    perf_df["estimated_ltv"] = pd.to_numeric(
+        perf_df["estimated_ltv"],
+        errors="coerce"
+    )
+    
+    perf_df.loc[
+        perf_df["estimated_ltv"] > 300,
+        "estimated_ltv"
+    ] = None
 
     features = (
         perf_df

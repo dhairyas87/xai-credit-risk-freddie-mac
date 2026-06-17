@@ -19,7 +19,8 @@ from src.feature_engineering import (
     clean_origination_data,
     merge_origination_and_target,
     create_bss,
-    validate_master_dataset
+    validate_master_dataset,
+    create_performance_features
 )
 
 
@@ -109,7 +110,28 @@ def build_master_dataset(
         on="loan_identifier",
         how="left"
     )
+
+    # ----------------------------------
+    # Resolve duplicate columns
+    # ----------------------------------
     
+    master_df = master_df.drop(
+        columns=[
+            "max_delinquency_x",
+            "ever_modified_x",
+            "ever_assistance_x"
+        ],
+        errors="ignore"
+    )
+    
+    master_df = master_df.rename(
+        columns={
+            "max_delinquency_y": "max_delinquency",
+            "ever_modified_y": "ever_modified",
+            "ever_assistance_y": "ever_assistance"
+        }
+    )
+        
     print(
         f"After performance merge: {master_df.shape}"
     )
@@ -125,6 +147,10 @@ def build_master_dataset(
     print("\nCreating Borrower Serviceability Score...")
 
     master_df = create_bss(
+        master_df
+    )
+
+    master_df = create_performance_features(
         master_df
     )
 

@@ -25,6 +25,21 @@ def clean_origination_data(df: pd.DataFrame) -> pd.DataFrame:
     df["ltv"] = df["ltv"].replace(999, np.nan)
     df["cltv"] = df["cltv"].replace(999, np.nan)
 
+    drop_columns = [
+    
+        "pre_harp_loan_sequence_number",
+    
+        "harp_indicator",
+    
+        "super_conforming_flag"
+    
+    ]
+
+    df = df.drop(
+        columns=drop_columns,
+        errors="ignore"
+    )
+
     return df
 
 
@@ -82,26 +97,6 @@ def create_bss(df: pd.DataFrame) -> pd.DataFrame:
         (df["num_borrowers"] - df["num_borrowers"].min())
         /
         (df["num_borrowers"].max() - df["num_borrowers"].min())
-    )
-    df["delinquency_intensity"] = (
-        df["months_delinquent"]
-        /
-        df["loan_age_max"]
-    )
-    df["modification_intensity"] = (
-        df["modification_count"]
-        /
-        df["loan_age_max"]
-    )
-    df["assistance_intensity"] = (
-        df["assistance_count"]
-        /
-        df["loan_age_max"]
-    )
-    df["eltv_drift"] = (
-        df["estimated_ltv_avg"]
-        -
-        df["ltv"]
     )
 
     # -----------------------------
@@ -172,3 +167,50 @@ def validate_master_dataset(df: pd.DataFrame):
         )
 
     print("Master dataset validation passed.")
+
+
+
+def create_performance_features(
+    df
+):
+    df["delinquency_intensity"] = (
+
+        df["months_delinquent"]
+    
+        /
+    
+        df["loan_age_max"]
+        .replace(0, 1)
+    
+    )
+    df["modification_intensity"] = (
+    
+        df["modification_count"]
+    
+        /
+    
+        df["loan_age_max"]
+        .replace(0, 1)
+    
+    )
+    df["assistance_intensity"] = (
+
+        df["assistance_count"]
+    
+        /
+    
+        df["loan_age_max"]
+        .replace(0, 1)
+    
+    )
+    df["eltv_drift"] = (
+    
+        df["estimated_ltv_avg"]
+    
+        -
+    
+        df["ltv"]
+    
+    )
+    return df
+    
