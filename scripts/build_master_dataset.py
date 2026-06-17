@@ -13,6 +13,7 @@ Output:
 import pandas as pd
 
 from src.data_loader import load_origination
+from pathlib import Path
 
 from src.feature_engineering import (
     clean_origination_data,
@@ -25,6 +26,7 @@ from src.feature_engineering import (
 def build_master_dataset(
     origination_path: str,
     target_path: str,
+    performance_features_path: str,
     output_path: str
 ):
     """
@@ -59,6 +61,16 @@ def build_master_dataset(
         f"Target shape: {loan_perf_df.shape}"
     )
 
+    print("\nLoading performance features...")
+
+    performance_df = pd.read_parquet(
+        performance_features_path
+    )
+    
+    print(
+        f"Performance Features shape: {performance_df.shape}"
+    )
+
     # ----------------------------------
     # Clean Data
     # ----------------------------------
@@ -75,9 +87,31 @@ def build_master_dataset(
 
     print("\nMerging datasets...")
 
+    # ----------------------------------
+    # Merge Origination + Target
+    # ----------------------------------
+    
     master_df = merge_origination_and_target(
         orig_df,
         loan_perf_df
+    )
+    
+    print(
+        f"After target merge: {master_df.shape}"
+    )
+    
+    # ----------------------------------
+    # Merge Performance Features
+    # ----------------------------------
+    
+    master_df = master_df.merge(
+        performance_df,
+        on="loan_identifier",
+        how="left"
+    )
+    
+    print(
+        f"After performance merge: {master_df.shape}"
     )
 
     print(
@@ -92,6 +126,22 @@ def build_master_dataset(
 
     master_df = create_bss(
         master_df
+    )
+
+    quarter = (
+    Path(origination_path)
+    .stem
+    .split("_")[-1]
+    )
+    
+    master_df["quarter"] = quarter
+    
+    master_df["year"] = int(
+        quarter[:4]
+    )
+    
+    master_df["quarter_num"] = int(
+        quarter[-1]
     )
 
     # ----------------------------------

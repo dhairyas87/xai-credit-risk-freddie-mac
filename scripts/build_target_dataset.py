@@ -14,7 +14,8 @@ from src.validation import (
 from src.target_generation import (
     create_loan_level_performance,
     create_bssi,
-    create_stress_flag
+    create_stress_flag,
+    create_stress_level
 )
 
 
@@ -53,11 +54,30 @@ def build_target_dataset(
         loan_perf
     )
 
+    loan_perf = create_stress_level(
+        loan_perf
+    )
+
     print("Saving parquet...")
 
     loan_perf.to_parquet(
         output_path,
         index=False
+    )
+
+    print(
+        loan_perf[
+            [
+                "bssi",
+                "stress_flag",
+                "stress_level"
+            ]
+        ].head()
+    )
+    
+    print(
+        loan_perf["stress_level"]
+        .value_counts()
     )
 
     print("Done")

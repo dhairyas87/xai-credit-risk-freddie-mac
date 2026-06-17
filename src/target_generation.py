@@ -100,3 +100,31 @@ def create_stress_flag(df):
     ).astype(int)
 
     return df
+
+def create_stress_level(
+    loan_perf: pd.DataFrame
+) -> pd.DataFrame:
+
+    """
+    Stress Level
+
+    0 = No Stress
+    1 = Mild Stress
+    2 = Moderate/Severe Stress
+    """
+
+    loan_perf = loan_perf.copy()
+
+    loan_perf["stress_level"] = (
+        loan_perf["bssi"]
+        .replace(
+            {
+                0: 0,
+                1: 1,
+                2: 2,
+                3: 2
+            }
+        )
+    )
+
+    return loan_perf

@@ -83,6 +83,26 @@ def create_bss(df: pd.DataFrame) -> pd.DataFrame:
         /
         (df["num_borrowers"].max() - df["num_borrowers"].min())
     )
+    df["delinquency_intensity"] = (
+        df["months_delinquent"]
+        /
+        df["loan_age_max"]
+    )
+    df["modification_intensity"] = (
+        df["modification_count"]
+        /
+        df["loan_age_max"]
+    )
+    df["assistance_intensity"] = (
+        df["assistance_count"]
+        /
+        df["loan_age_max"]
+    )
+    df["eltv_drift"] = (
+        df["estimated_ltv_avg"]
+        -
+        df["ltv"]
+    )
 
     # -----------------------------
     # Borrower Serviceability Score
