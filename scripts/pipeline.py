@@ -18,6 +18,13 @@ from scripts.combine_quarters import (
 combine_quarters
 )
 
+from scripts.build_feature_store import (
+    build_feature_store
+)
+from scripts.build_modeling_datasets import (
+    build_modeling_datasets
+)
+
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -30,8 +37,10 @@ QUARTERS = [
     ]
 
 def run_pipeline(
-stage,
-quarter=None
+    stage,
+    quarter=None,
+    version="v1",
+    description=""
 ):
 
 
@@ -191,9 +200,24 @@ quarter=None
     # =====================================
     
     if stage == "feature_store":
+
+        build_feature_store(
     
-        print(
-            "\nImplement feature store stage"
+            input_path=
+            PROJECT_ROOT
+            / "data"
+            / "processed"
+            / "master_dataset_2018.parquet",
+    
+            output_root=
+            PROJECT_ROOT
+            / "data"
+            / "feature_store",
+    
+            version=version,
+    
+            description=description
+    
         )
     
         return
@@ -204,10 +228,17 @@ quarter=None
     
     if stage == "modeling":
     
-        print(
-            "\nImplement modeling stage"
-        )
+        build_modeling_datasets(
+
+            feature_store_root=
+            PROJECT_ROOT
+            / "data"
+            / "feature_store",
     
+            version=version
+
+        )
+
         return
     
     # =====================================

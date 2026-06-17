@@ -1,112 +1,139 @@
-"""
-Build Feature Store
-
-Input:
-    master_dataset_2018.parquet
-
-Outputs:
-
-Baseline:
-    train_baseline.parquet
-    valid_baseline.parquet
-    test_baseline.parquet
-
-BSS:
-    train_bss.parquet
-    valid_bss.parquet
-    test_bss.parquet
-"""
-
 from pathlib import Path
-
 import pandas as pd
 
-from src.modeling_prep import (
-    create_baseline_dataset,
-    create_bss_dataset,
-    create_temporal_splits,
-    save_datasets
-)
+def create_temporal_split(df):
+    
+    
+    train_df = df[
+        df["quarter"].isin(
+            ["2018Q1", "2018Q2"]
+        )
+    ].copy()
+    
+    valid_df = df[
+        df["quarter"] == "2018Q3"
+    ].copy()
+    
+    test_df = df[
+        df["quarter"] == "2018Q4"
+    ].copy()
+    
+    return (
+        train_df,
+        valid_df,
+        test_df
+    )
 
 
-def build_feature_store(
-    input_path,
-    output_dir
+def save_split(
+train_df,
+valid_df,
+test_df,
+output_dir
 ):
 
-    print("=" * 60)
-    print("BUILDING FEATURE STORE")
-    print("=" * 60)
 
-    Path(output_dir).mkdir(
+    output_dir.mkdir(
         parents=True,
         exist_ok=True
     )
-
-    print("\nLoading dataset...")
-
-    df = pd.read_parquet(
-        input_path
+    
+    train_df.to_parquet(
+        output_dir / "train.parquet",
+        index=False
     )
-
+    
+    valid_df.to_parquet(
+        output_dir / "valid.parquet",
+        index=False
+    )
+    
+    test_df.to_parquet(
+        output_dir / "test.parquet",
+        index=False
+    )
+    
     print(
-        f"Dataset Shape: {df.shape}"
+        f"\nSaved datasets to {output_dir}"
+    )
+    
+    print(
+        f"Train: {train_df.shape}"
+    )
+    
+    print(
+        f"Valid: {valid_df.shape}"
+    )
+    
+    print(
+        f"Test : {test_df.shape}"
     )
 
-    # =================================================
-    # BASELINE DATASET
-    # =================================================
 
-    print("\nCreating baseline dataset...")
+def build_modeling_datasets(
 
-    baseline_df = create_baseline_dataset(
-        df
+
+feature_store_root,
+
+version="v1"
+
+
+):
+
+
+    print("=" * 60)
+    print("BUILDING MODELING DATASETS")
+    print("=" * 60)
+    
+    root = (
+        Path(feature_store_root)
+        / version
     )
-
-    train_df, valid_df, test_df = (
-        create_temporal_splits(
-            baseline_df
+    
+    objectives = [
+    
+        "stress_prediction",
+    
+        "stress_severity",
+    
+        "serviceability"
+    
+    ]
+    
+    for objective in objectives:
+    
+        print(
+            f"\nProcessing {objective}"
         )
-    )
-
-    save_datasets(
-        train_df,
-        valid_df,
-        test_df,
-        prefix="baseline",
-        output_dir=output_dir
-    )
-
-    print(
-        f"Baseline Shape: {baseline_df.shape}"
-    )
-
-    # =================================================
-    # BSS DATASET
-    # =================================================
-
-    print("\nCreating BSS dataset...")
-
-    bss_df = create_bss_dataset(
-        df
-    )
-
-    train_df, valid_df, test_df = (
-        create_temporal_splits(
-            bss_df
+    
+        feature_store_path = (
+    
+            root
+            / objective
+            / "feature_store.parquet"
+    
         )
-    )
-
-    save_datasets(
-        train_df,
-        valid_df,
-        test_df,
-        prefix="bss",
-        output_dir=output_dir
-    )
-
+    
+        df = pd.read_parquet(
+            feature_store_path
+        )
+    
+        train_df, valid_df, test_df = (
+            create_temporal_split(df)
+        )
+    
+        save_split(
+    
+            train_df,
+    
+            valid_df,
+    
+            test_df,
+    
+            root / objective
+    
+        )
+    
     print(
-        f"BSS Shape: {bss_df.shape}"
+        "\nModeling datasets created."
     )
-
-    print("\nFeature store creation complete.")

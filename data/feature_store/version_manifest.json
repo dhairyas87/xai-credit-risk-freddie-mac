@@ -1,0 +1,13 @@
+{
+    "latest_version": "v1",
+    "versions": {
+        "v1": {
+            "version": "v1",
+            "created_on": "2026-06-17 20:03:49",
+            "source_dataset": "master_dataset_2018.parquet",
+            "rows": 1285434,
+            "columns": 66,
+            "description": "Initial dissertation feature store"
+        }
+    }
+}
