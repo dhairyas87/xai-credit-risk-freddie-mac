@@ -1,0 +1,8 @@
+{
+    "version": "v2",
+    "created_on": "2026-06-17 21:21:28",
+    "source_dataset": "master_dataset_2018.parquet",
+    "rows": 1285434,
+    "columns": 66,
+    "description": "\n    Stress prediction dataset cleaned.\n    Removed performance leakage and temporal leakage.\n    Origination-only stress prediction.\n    "
+}

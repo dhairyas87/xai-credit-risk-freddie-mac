@@ -1,0 +1,7 @@
+feature,present
+max_delinquency,True
+avg_delinquency,True
+months_delinquent,True
+modification_count,True
+assistance_count,True
+delinquency_intensity,True

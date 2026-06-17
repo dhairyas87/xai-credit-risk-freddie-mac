@@ -24,37 +24,58 @@ IDENTIFIER_COLUMNS = [
 # Stress Prediction
 
 # -----------------------------------------------------
-
 STRESS_PREDICTION_DROP = [
 
+    # Other targets
 
-"stress_level",
-"bssi",
+    "stress_level",
+    "bssi",
 
-"bss",
-"bss_bucket",
-"bss_level",
+    "bss",
+    "bss_bucket",
+    "bss_level",
 
-# Future leakage
+    # Performance leakage
 
-"max_delinquency",
-"avg_delinquency",
-"months_delinquent",
+    "max_delinquency",
+    "avg_delinquency",
+    "months_delinquent",
 
-"ever_modified",
-"ever_assistance",
+    "ever_modified",
+    "ever_assistance",
 
-"modification_count",
-"assistance_count",
+    "modification_count",
+    "assistance_count",
 
-"delinquency_intensity",
-"modification_intensity",
-"assistance_intensity",
+    "delinquency_intensity",
+    "modification_intensity",
+    "assistance_intensity",
 
-"ever_ra",
-"ever_zero_balance"
+    "ever_ra",
+    "ever_zero_balance",
+
+    # Future performance metrics
+
+    "loan_age_max",
+    "loan_age_avg",
+
+    "remaining_term_avg",
+
+    "current_rate_avg",
+    "current_rate_max",
+    "current_rate_min",
+
+    "estimated_ltv_avg",
+    "estimated_ltv_max",
+
+    "rate_volatility",
+
+    "eltv_drift",
 
 
+    # Serviceability target
+
+    "serviceability_score"
 ]
 
 # -----------------------------------------------------

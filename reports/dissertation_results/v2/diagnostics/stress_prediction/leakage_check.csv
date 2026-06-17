@@ -1,0 +1,7 @@
+feature,present
+max_delinquency,False
+avg_delinquency,False
+months_delinquent,False
+modification_count,False
+assistance_count,False
+delinquency_intensity,False

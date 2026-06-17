@@ -24,7 +24,9 @@ from scripts.build_feature_store import (
 from scripts.build_modeling_datasets import (
     build_modeling_datasets
 )
-
+from scripts.run_diagnostics import (
+    run_diagnostics
+)
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -239,6 +241,30 @@ def run_pipeline(
 
         )
 
+        return
+
+    # =====================================
+    # DIAGNOSTICS
+    # =====================================
+    
+    if stage == "diagnostics":
+    
+        run_diagnostics(
+    
+            feature_store_root=
+            PROJECT_ROOT
+            / "data"
+            / "feature_store",
+    
+            report_root=
+            PROJECT_ROOT
+            / "reports"
+            / "dissertation_results",
+    
+            version=version
+    
+        )
+    
         return
     
     # =====================================

@@ -1,0 +1,15 @@
+column,unique_values
+first_time_homebuyer_indicator,3
+occupancy_status,3
+channel,4
+prepayment_penalty_indicator,1
+amortization_type,1
+property_state,54
+property_type,5
+loan_purpose,3
+seller_name,25
+servicer_name,24
+program_indicator,3
+interest_only_indicator,1
+mortgage_insurance_cancellation_indicator,3
+quarter,2
