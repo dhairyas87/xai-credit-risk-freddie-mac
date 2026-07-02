@@ -255,6 +255,7 @@ export default function App() {
         </form>
 
                 {/* Dynamic Multi-Model Output Display View */}
+         {/* Dynamic Multi-Model Output Display View */}
         <div className={`result-card ${result ? "has-result" : ""}`}>
           <p className="result-kicker">Risk Assessment</p>
           <h2>Estimation Profile</h2>
@@ -268,9 +269,7 @@ export default function App() {
                 </div>
                 <div>
                   <p>Estimated Loan Target</p>
-                  <strong>
-                    {currency.format(result.estimated_loan_amount)}
-                  </strong>
+                  <strong>{currency.format(result.estimated_loan_amount)}</strong>
                 </div>
               </div>
 
@@ -286,7 +285,7 @@ export default function App() {
                 </div>
               </div>
 
-              {/* 3. New Parameter: Interest Rate */}
+              {/* 3. Interest Rate */}
               <div className="result-block">
                 <div className="result-icon">
                   <LockKeyhole size={22} />
@@ -297,6 +296,57 @@ export default function App() {
                   <small>Expected benchmark APR</small>
                 </div>
               </div>
+
+              {/* NEW LIVE XAI EXPLAINABILITY SECTION */}
+              {result.shap_attributions && (
+                <div style={{ 
+                  marginTop: "24px", 
+                  borderTop: "1px solid rgba(255,255,255,.14)", 
+                  paddingTop: "20px" 
+                }}>
+                  <p className="result-kicker" style={{ fontSize: "11px", marginBottom: "12px" }}>
+                    XAI: Local Underwriting Feature Drivers
+                  </p>
+                  
+                  <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+                    {result.shap_attributions.map(([feature, score]) => {
+                      // Map abstract feature keys onto clean, business-friendly labels
+                      const businessLabels = {
+                        "credit_score": "Borrower Credit Worthiness",
+                        "dti": "Debt-to-Income Constraint",
+                        "ltv": "Collateral Leverage Position (LTV)",
+                        "cltv": "Combined Leverage Footprint (CLTV)",
+                        "property_type": "Structural Asset Valuation Code",
+                        "property_state": "Geographic Market Jurisdiction",
+                        "num_borrowers": "Applicant Account Capacity Pool",
+                        "dti_ltv_interaction": "Leverage-Income Risk Interaction",
+                        "credit_risk_multiplier": "Solvency Underwriting Ratio",
+                        "first_time_homebuyer_indicator": "First-Time Homebuyer Flag"
+                      };
+                      
+                      const label = businessLabels[feature] || feature;
+                      const isPositive = score > 0;
+                      
+                      return (
+                        <div key={feature} style={{ fontSize: "13px" }}>
+                          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "3px" }}>
+                            <span style={{ color: "#d8e3dd", fontWeight: "500" }}>{label}</span>
+                            <span style={{ fontWeight: "700", color: isPositive ? "#d6ed72" : "#60a5fa" }}>
+                              {isPositive ? `+${score}` : score}
+                            </span>
+                          </div>
+                          <p style={{ margin: "0 0 4px 0", color: "#b9c8c0", fontSize: "11px", lineHeight: "1.4" }}>
+                            {isPositive 
+                              ? "This profile parameter expands borrowing capacity, allowing for larger financing parameters based on historical models." 
+                              : "This parameter restricts lending exposure bounds, pulling the estimated target downward to manage safety thresholds."
+                            }
+                          </p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
 
               <p className="disclaimer">{result.disclaimer}</p>
             </div>
@@ -314,6 +364,7 @@ export default function App() {
             </div>
           )}
         </div>
+
       </div>
 
       <footer>
