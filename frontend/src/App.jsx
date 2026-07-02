@@ -254,55 +254,71 @@ export default function App() {
           </div>
         </form>
 
-        <aside className={`result-card ${result ? "has-result" : ""}`}>
+                {/* Dynamic Multi-Model Output Display View */}
+        <div className={`result-card ${result ? "has-result" : ""}`}>
+          <p className="result-kicker">Risk Assessment</p>
+          <h2>Estimation Profile</h2>
+
           {result ? (
-            <>
-              <p className="result-kicker">Your model estimate</p>
-              <h2>A practical starting point</h2>
+            <div>
+              {/* 1. Loan Amount */}
               <div className="result-block">
-                <span className="result-icon"><BadgeDollarSign size={22} /></span>
+                <div className="result-icon">
+                  <BadgeDollarSign size={22} />
+                </div>
                 <div>
-                  <p>Estimated loan amount</p>
-                  <strong>{currency.format(result.estimated_loan_amount)}</strong>
+                  <p>Estimated Loan Target</p>
+                  <strong>
+                    {currency.format(result.estimated_loan_amount)}
+                  </strong>
                 </div>
               </div>
+
+              {/* 2. Classified Loan Term Category */}
               <div className="result-block">
-                <span className="result-icon"><CalendarClock size={22} /></span>
+                <div className="result-icon">
+                  <CalendarClock size={22} />
+                </div>
                 <div>
-                  <p>Estimated loan term</p>
-                  <strong>{result.estimated_loan_term_years} years</strong>
-                  <small>{result.estimated_loan_term_months} monthly payments</small>
+                  <p>Optimal Term Shape</p>
+                  <strong>{result.estimated_loan_term_years} Year Fixed</strong>
+                  <small>({result.estimated_loan_term_months} Months)</small>
                 </div>
               </div>
-              <div className="result-explainer">
-                <Sparkles size={17} />
-                <p>
-                  This estimate compares your inputs with patterns in more than
-                  1.2 million Freddie Mac loans originated in 2018.
-                </p>
+
+              {/* 3. New Parameter: Interest Rate */}
+              <div className="result-block">
+                <div className="result-icon">
+                  <LockKeyhole size={22} />
+                </div>
+                <div>
+                  <p>Estimated Interest Rate</p>
+                  <strong>{result.estimated_interest_rate}%</strong>
+                  <small>Expected benchmark APR</small>
+                </div>
               </div>
+
               <p className="disclaimer">{result.disclaimer}</p>
-            </>
+            </div>
           ) : (
             <div className="empty-result">
               <div className="orb">
-                <span><BadgeDollarSign size={28} /></span>
-                <span><CalendarClock size={24} /></span>
+                <span><BadgeDollarSign size={24} /></span>
+                <span><LockKeyhole size={20} /></span>
               </div>
-              <p className="result-kicker">Your estimate</p>
-              <h2>Two useful numbers, one simple form.</h2>
+              <p>Awaiting Input Parameters</p>
               <p>
-                Complete the details and we’ll estimate a loan amount and a
-                standard term in seconds.
+                Fill out the metrics form parameters to execute your
+                analytical models and generate portfolio predictions.
               </p>
             </div>
           )}
-        </aside>
+        </div>
       </div>
 
       <footer>
-        <span>LoanFit</span>
-        <p>Built for explainable credit-risk research using Freddie Mac data.</p>
+        <div>&copy; 2026 LoanFit Research Studio</div>
+        <div>Freddie Mac Single-Family Dataset Variant</div>
       </footer>
     </main>
   );

@@ -1,125 +1,89 @@
-"""Train the loan-term estimator used by the web application."""
-
 from pathlib import Path
-
-import joblib
 import numpy as np
 import pandas as pd
-from sklearn.compose import ColumnTransformer
-from sklearn.ensemble import HistGradientBoostingRegressor
-from sklearn.impute import SimpleImputer
-from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import OrdinalEncoder
-
+import joblib
+from sklearn.metrics import classification_report, accuracy_score
+from catboost import CatBoostClassifier
 
 TARGET = "target"
-
 CATEGORICAL_FEATURES = [
-    "first_time_homebuyer_indicator",
-    "occupancy_status",
-    "property_type",
-    "property_state",
-    "msa",
-    "channel",
-    "loan_purpose",
-    "program_indicator",
-    "property_valuation_method",
-    "interest_only_indicator",
-    "mortgage_insurance_cancellation_indicator",
-    "quarter",
+    "first_time_homebuyer_indicator", "occupancy_status", "property_type",
+    "property_state", "msa", "channel", "loan_purpose", "program_indicator",
+    "property_valuation_method", "interest_only_indicator",
+    "mortgage_insurance_cancellation_indicator", "quarter"
 ]
-
 NUMERICAL_FEATURES = [
-    "credit_score",
-    "dti",
-    "num_borrowers",
-    "num_units",
-    "ltv",
-    "cltv",
-    "mortgage_insurance_pct",
-    "quarter_num",
+    "credit_score", "dti", "num_borrowers", "num_units", "ltv", "cltv", 
+    "mortgage_insurance_pct", "quarter_num"
 ]
 
+def map_to_classes(y_series):
+    """Maps continuous months directly to clean discrete classification targets using a dict."""
+    y_int = y_series.astype(int)
+    mapping = {180: 15, 360: 30}
+    return y_int.map(mapping).fillna(99).astype(int).values
 
-def build_pipeline() -> Pipeline:
-    categorical = Pipeline(
-        [
-            ("imputer", SimpleImputer(strategy="most_frequent")),
-            (
-                "encoder",
-                OrdinalEncoder(
-                    handle_unknown="use_encoded_value",
-                    unknown_value=-1,
-                ),
-            ),
-        ]
-    )
-    numeric = Pipeline([("imputer", SimpleImputer(strategy="median"))])
+def clean_and_format(df):
+    """Natively formats data types for fast CatBoost multi-threaded processing."""
+    df = df.copy()
+    for col in CATEGORICAL_FEATURES:
+        df[col] = df[col].astype(str).fillna("UNKNOWN")
+    for col in NUMERICAL_FEATURES:
+        df[col] = pd.to_numeric(df[col], errors='coerce')
+    return df
 
-    return Pipeline(
-        [
-            (
-                "preprocessor",
-                ColumnTransformer(
-                    [
-                        ("numeric", numeric, NUMERICAL_FEATURES),
-                        ("categorical", categorical, CATEGORICAL_FEATURES),
-                    ]
-                ),
-            ),
-            (
-                "model",
-                HistGradientBoostingRegressor(
-                    learning_rate=0.08,
-                    max_iter=180,
-                    max_leaf_nodes=31,
-                    l2_regularization=1.0,
-                    random_state=42,
-                ),
-            ),
-        ]
-    )
-
-
-def train_loan_term(
-    feature_store_root: Path,
-    model_root: Path,
-    report_root: Path,
-    version: str = "v3",
-) -> Path:
-    data_root = feature_store_root / version / "loan_term"
+def train_loan_term(feature_store_root: Path, model_root: Path, report_root: Path, version: str = "v4"):
+    print("=" * 60)
+    print("TRAINING LOAN TERM CLASSIFICATION MODEL (CATBOOST)")
+    print("=" * 60)
+    
+    data_root = feature_store_root / "v3" / "loan_term"
     train_df = pd.read_parquet(data_root / "train.parquet")
     test_df = pd.read_parquet(data_root / "test.parquet")
 
-    model = build_pipeline()
-    model.fit(train_df.drop(columns=TARGET), train_df[TARGET])
+    all_features = NUMERICAL_FEATURES + CATEGORICAL_FEATURES
 
-    predictions = model.predict(test_df.drop(columns=TARGET))
-    actual = test_df[TARGET]
-    metrics = pd.DataFrame(
-        {
-            "Metric": ["RMSE_months", "MAE_months", "R2"],
-            "Value": [
-                np.sqrt(mean_squared_error(actual, predictions)),
-                mean_absolute_error(actual, predictions),
-                r2_score(actual, predictions),
-            ],
-        }
+    X_train = clean_and_format(train_df[all_features])
+    y_train = map_to_classes(train_df[TARGET])
+    
+    X_test = clean_and_format(test_df[all_features])
+    y_test = map_to_classes(test_df[TARGET])
+
+    # Initialise CatBoost Classifier for fast parallel training execution
+    model = CatBoostClassifier(
+        iterations=500,
+        learning_rate=0.08,
+        depth=6,
+        loss_function='MultiClass',
+        random_seed=42,
+        verbose=100,
+        thread_count=-1 # Forces usage of all available CPU cores to prevent hanging
     )
+
+    print("\nTraining CatBoost Classifier...")
+    model.fit(
+        X_train, y_train,
+        cat_features=CATEGORICAL_FEATURES
+    )
+
+    predictions = model.predict(X_test)
+    # Flatten array shape output by CatBoost
+    predictions = predictions.flatten()
+    
+    print("\nClassification Report Results:")
+    print(classification_report(y_test, predictions, zero_division=0))
+    
+    acc = accuracy_score(y_test, predictions)
+    metrics_df = pd.DataFrame({"Metric": ["Accuracy"], "Value": [acc]})
 
     model_dir = model_root / version / "loan_term"
     report_dir = report_root / version / "loan_term"
     model_dir.mkdir(parents=True, exist_ok=True)
     report_dir.mkdir(parents=True, exist_ok=True)
 
-    model_path = model_dir / "hist_gradient_boosting.pkl"
-    joblib.dump(model, model_path)
-    metrics.to_csv(report_dir / "metrics.csv", index=False)
-    print(metrics.to_string(index=False))
-    print(f"Saved model: {model_path}")
-    return model_path
-
+    joblib.dump(model, model_dir / "hist_gradient_boosting.pkl")
+    metrics_df.to_csv(report_dir / "metrics.csv", index=False)
+    print(f"Saved classification model: {model_dir / 'hist_gradient_boosting.pkl'}")
 
 if __name__ == "__main__":
     project_root = Path(__file__).resolve().parent.parent
