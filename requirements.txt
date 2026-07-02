@@ -9,3 +9,6 @@ shap
 lime
 pyarrow
 openpyxl
+catboost
+fastapi
+uvicorn
