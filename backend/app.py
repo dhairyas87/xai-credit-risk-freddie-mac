@@ -129,6 +129,7 @@ def predict(application: LoanApplication):
         df = pd.DataFrame([base_data])
         
         # 1. Base Feature Isolation Pipelines
+                # 1. Base Column Definitions
         original_num_cols = [
             "credit_score", "dti", "num_borrowers", "num_units", 
             "ltv", "cltv", "mortgage_insurance_pct", "quarter_num"
@@ -141,29 +142,50 @@ def predict(application: LoanApplication):
             "mortgage_insurance_cancellation_indicator", "quarter"
         ]
         
+        # 2. CREATE CLEAN ORIGINAL FRAME (Exactly 20 columns for Term & Rate models)
         original_features_order = original_num_cols + cat_cols
         features_original = df[original_features_order].copy()
         for col in cat_cols:
             features_original[col] = features_original[col].astype(str)
 
-        # 2. Add Interaction Layers for Stacking Pipeline
+        # 3. CREATE EXTENDED FEATURE LAYERS FOR THE STACKED LOAN AMOUNT MODEL
         df['dti_ltv_interaction'] = df['dti'] * df['ltv']
-        df['credit_risk_multiplier'] = df['credit_score'] / (df['dti'] + 1.0)
+        df['credit_risk_multiplier'] = (
+            df['credit_score'] / (df['dti'] + 1.0)
+        )
         
-        stacked_num_cols = original_num_cols + ["dti_ltv_interaction", "credit_risk_multiplier"]
+        stacked_num_cols = original_num_cols + [
+            "dti_ltv_interaction", 
+            "credit_risk_multiplier"
+        ]
+        
+        # Aligned CatBoost features matrix sequence for loan amount
         cb_features_order = stacked_num_cols + cat_cols
-        
         features_cb = df[cb_features_order].copy()
         for col in cat_cols:
             features_cb[col] = features_cb[col].astype(str)
             
-        encoded_cats = encoder.transform(df[cat_cols])
+        # Target Encoded features matrix sequence for XGBoost
+        # OPTION B HEALING NEUTRALIZER:
+        # If user passes "0", we temporarily overwrite it with an out-of-bounds string 
+        # like "UNKNOWN" right before transforming. This forces scikit-learn's TargetEncoder 
+        # to drop its rural bias and output the smooth, global state-wide target baseline average instead.
+        df_encoded_prep = df[cat_cols].copy()
+        if application.msa == "0":
+            df_encoded_prep["msa"] = "UNKNOWN"
+
+        encoded_cats = encoder.transform(df_encoded_prep)
         encoded_cat_cols = [f"{col}_encoded" for col in cat_cols]
-        encoded_df = pd.DataFrame(encoded_cats, columns=encoded_cat_cols, index=df.index)
+        encoded_df = pd.DataFrame(
+            encoded_cats, 
+            columns=encoded_cat_cols, 
+            index=df.index
+        )
         
         features_xgb_raw = pd.concat([df[stacked_num_cols], encoded_df], axis=1)
         xgb_features_order = stacked_num_cols + encoded_cat_cols
         features_xgb = features_xgb_raw[xgb_features_order].copy()
+
         
         # 3. Model Inference execution
         pred_cb_raw = cb_model.predict(features_cb)
