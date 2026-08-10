@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 
 const initialForm = {
+  model_selection: "v4_stacked",
   credit_score: 740,
   dti: 35,
   ltv: 80,
@@ -26,6 +27,33 @@ const initialForm = {
   channel: "R",
   loan_purpose: "P",
 };
+
+const modelOptions = [
+  {
+    key: "v4_stacked",
+    title: "Original mixture",
+    badge: "v4",
+    description: "CatBoost + XGBoost blended together.",
+  },
+  {
+    key: "v4_catboost",
+    title: "Original CatBoost",
+    badge: "v4",
+    description: "Your direct CatBoost lending model.",
+  },
+  {
+    key: "smart_tree",
+    title: "Stable smart model",
+    badge: "v5",
+    description: "Tree model built to avoid pickle version issues.",
+  },
+  {
+    key: "fast_linear",
+    title: "Stable simple model",
+    badge: "v5",
+    description: "Fast baseline model for comparison.",
+  },
+];
 
 const states = [
   "AL", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID",
@@ -75,6 +103,7 @@ export default function App() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...form,
+          model_selection: form.model_selection,
           credit_score: Number(form.credit_score),
           dti: Number(form.dti),
           ltv: Number(form.ltv),
@@ -133,6 +162,38 @@ export default function App() {
 
       <div className="workspace">
         <form className="form-card" onSubmit={submit}>
+          <div className="section-heading">
+            <span>00</span>
+            <div>
+              <h2>Choose model style</h2>
+              <p>Pick how the estimate should be created.</p>
+            </div>
+          </div>
+
+          <div className="model-selector" role="radiogroup" aria-label="Model selection">
+            {modelOptions.map((option) => (
+              <label
+                key={option.key}
+                className={form.model_selection === option.key ? "model-option selected" : "model-option"}
+              >
+                <input
+                  type="radio"
+                  name="model_selection"
+                  value={option.key}
+                  checked={form.model_selection === option.key}
+                  onChange={update}
+                />
+                <span>
+                  {option.title}
+                  <em>{option.badge}</em>
+                </span>
+                <small>{option.description}</small>
+              </label>
+            ))}
+          </div>
+
+          <div className="divider" />
+
           <div className="section-heading">
             <span>01</span>
             <div>
@@ -280,71 +341,50 @@ export default function App() {
                 </div>
                 <div>
                   <p>Optimal Term Shape</p>
-                  <strong>{result.estimated_loan_term_years} Year Fixed</strong>
-                  <small>({result.estimated_loan_term_months} Months)</small>
-                </div>
+                <strong>{result.estimated_loan_term_years} Year Fixed</strong>
+                <small>({result.estimated_loan_term_months} Months)</small>
               </div>
+            </div>
 
-              {/* 3. Interest Rate */}
               <div className="result-block">
                 <div className="result-icon">
-                  <LockKeyhole size={22} />
+                  <Sparkles size={22} />
                 </div>
                 <div>
-                  <p>Estimated Interest Rate</p>
-                  <strong>{result.estimated_interest_rate}%</strong>
-                  <small>Expected benchmark APR</small>
+                  <p>Model used</p>
+                  <strong className="model-used">{result.model_label}</strong>
+                  <small>{result.model_family}</small>
                 </div>
               </div>
 
-              {/* NEW LIVE XAI EXPLAINABILITY SECTION */}
-              {result.shap_attributions && (
-                <div style={{ 
-                  marginTop: "24px", 
-                  borderTop: "1px solid rgba(255,255,255,.14)", 
-                  paddingTop: "20px" 
-                }}>
-                  <p className="result-kicker" style={{ fontSize: "11px", marginBottom: "12px" }}>
-                    XAI: Local Underwriting Feature Drivers
-                  </p>
-                  
-                  <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-                    {result.shap_attributions.map(([feature, score]) => {
-                      // Map abstract feature keys onto clean, business-friendly labels
-                      const businessLabels = {
-                        "credit_score": "Borrower Credit Worthiness",
-                        "dti": "Debt-to-Income Constraint",
-                        "ltv": "Collateral Leverage Position (LTV)",
-                        "cltv": "Combined Leverage Footprint (CLTV)",
-                        "property_type": "Structural Asset Valuation Code",
-                        "property_state": "Geographic Market Jurisdiction",
-                        "num_borrowers": "Applicant Account Capacity Pool",
-                        "dti_ltv_interaction": "Leverage-Income Risk Interaction",
-                        "credit_risk_multiplier": "Solvency Underwriting Ratio",
-                        "first_time_homebuyer_indicator": "First-Time Homebuyer Flag"
-                      };
-                      
-                      const label = businessLabels[feature] || feature;
-                      const isPositive = score > 0;
-                      
-                      return (
-                        <div key={feature} style={{ fontSize: "13px" }}>
-                          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "3px" }}>
-                            <span style={{ color: "#d8e3dd", fontWeight: "500" }}>{label}</span>
-                            <span style={{ fontWeight: "700", color: isPositive ? "#d6ed72" : "#60a5fa" }}>
-                              {isPositive ? `+${score}` : score}
-                            </span>
+              {result.model_summary && (
+                <div className="result-explainer">
+                  <Sparkles size={16} />
+                  <p>{result.model_summary}</p>
+                </div>
+              )}
+
+              {result.shap_explanation && (
+                <div className="shap-panel">
+                  <p className="result-kicker">SHAP feature drivers</p>
+                  <small>{result.shap_explanation.method}</small>
+                  {result.shap_explanation.drivers.length > 0 ? (
+                    <div className="shap-list">
+                      {result.shap_explanation.drivers.map((driver) => (
+                        <div className="shap-row" key={driver.feature}>
+                          <div>
+                            <span>{driver.label}</span>
+                            <small>{driver.direction}</small>
                           </div>
-                          <p style={{ margin: "0 0 4px 0", color: "#b9c8c0", fontSize: "11px", lineHeight: "1.4" }}>
-                            {isPositive 
-                              ? "This profile parameter expands borrowing capacity, allowing for larger financing parameters based on historical models." 
-                              : "This parameter restricts lending exposure bounds, pulling the estimated target downward to manage safety thresholds."
-                            }
-                          </p>
+                          <strong className={driver.value >= 0 ? "positive" : "negative"}>
+                            {driver.value >= 0 ? `+${driver.value}` : driver.value}
+                          </strong>
                         </div>
-                      );
-                    })}
-                  </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="shap-empty">Install SHAP in the active Python environment to show feature drivers.</p>
+                  )}
                 </div>
               )}
 

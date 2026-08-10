@@ -1,0 +1,3 @@
+accuracy,mae_months,model
+0.64655,37.9728,fast_linear
+0.84835,24.4374,smart_tree
