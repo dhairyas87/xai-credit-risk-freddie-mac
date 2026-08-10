@@ -70,6 +70,14 @@ def _term_metrics(y_true: pd.Series, y_pred: np.ndarray) -> dict[str, float]:
     }
 
 
+def _rate_metrics(y_true: pd.Series, y_pred: np.ndarray) -> dict[str, float]:
+    return {
+        "rmse_rate": float(np.sqrt(mean_squared_error(y_true, y_pred))),
+        "mae_rate": float(mean_absolute_error(y_true, y_pred)),
+        "r2": float(r2_score(y_true, y_pred)),
+    }
+
+
 def _save_metrics(metrics: list[dict[str, object]], report_dir: Path) -> None:
     report_dir.mkdir(parents=True, exist_ok=True)
     pd.DataFrame(metrics).to_csv(report_dir / "metrics.csv", index=False)
@@ -188,6 +196,51 @@ def train_lending_models(
         print(metrics)
 
     _save_metrics(term_metrics, report_version_root / "loan_term")
+
+    # -------------------------------------------------
+    # Interest rate models
+    # -------------------------------------------------
+    rate_train, _rate_valid, rate_test = _load_split(feature_store_root, "interest_rate", data_version)
+    rate_train = _maybe_sample(rate_train, sample_rows)
+    rate_test = _maybe_sample(rate_test, sample_rows, random_state=43)
+
+    y_rate_train = rate_train[TARGET]
+    X_rate_test = prepare_frame(rate_test)
+    y_rate_test = rate_test[TARGET]
+
+    rate_models = {
+        "fast_linear": (
+            "linear",
+            Ridge(alpha=10.0),
+        ),
+        "smart_tree": (
+            "tree",
+            HistGradientBoostingRegressor(
+                max_iter=180,
+                learning_rate=0.08,
+                l2_regularization=0.1,
+                random_state=42,
+            ),
+        ),
+    }
+
+    rate_model_dir = model_version_root / "interest_rate"
+    rate_model_dir.mkdir(parents=True, exist_ok=True)
+    rate_metrics = []
+
+    for name, (mode, estimator) in rate_models.items():
+        print(f"\nTraining interest rate model: {name}")
+        train_for_bundle = prepare_frame(rate_train)
+        train_for_bundle[TARGET] = y_rate_train.values
+        bundle = make_bundle(mode, estimator, train_for_bundle)
+        predictions = bundle.predict(X_rate_test)
+        metrics = _rate_metrics(y_rate_test, predictions)
+        metrics["model"] = name
+        rate_metrics.append(metrics)
+        joblib.dump(bundle, rate_model_dir / f"{name}.pkl")
+        print(metrics)
+
+    _save_metrics(rate_metrics, report_version_root / "interest_rate")
 
     print("\nLoanFit model training complete.")
     print(f"Models saved under: {model_version_root}")

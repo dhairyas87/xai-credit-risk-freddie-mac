@@ -128,16 +128,19 @@ def load_model_option(model_name: ModelName):
             bundle = {
                 "amount": joblib.load(require_file(V5_ROOT / "loan_amount" / "fast_linear.pkl")),
                 "term": joblib.load(require_file(V5_ROOT / "loan_term" / "fast_linear.pkl")),
+                "rate": joblib.load(require_file(V5_ROOT / "interest_rate" / "fast_linear.pkl")),
             }
         elif model_name == "smart_tree":
             bundle = {
                 "amount": joblib.load(require_file(V5_ROOT / "loan_amount" / "smart_tree.pkl")),
                 "term": joblib.load(require_file(V5_ROOT / "loan_term" / "smart_tree.pkl")),
+                "rate": joblib.load(require_file(V5_ROOT / "interest_rate" / "smart_tree.pkl")),
             }
         elif model_name == "v4_catboost":
             bundle = {
                 "amount": joblib.load(require_file(V4_ROOT / "loan_amount" / "catboost_loan_amount.pkl")),
                 "term": joblib.load(require_file(V4_ROOT / "loan_term" / "hist_gradient_boosting.pkl")),
+                "rate": joblib.load(require_file(V4_ROOT / "interest_rate" / "catboost_interest_rate.pkl")),
             }
         elif model_name == "v4_stacked":
             bundle = {
@@ -146,6 +149,7 @@ def load_model_option(model_name: ModelName):
                 "meta": joblib.load(require_file(V4_ROOT / "loan_amount" / "stack_meta_blender.pkl")),
                 "encoder": joblib.load(require_file(V4_ROOT / "loan_amount" / "stack_target_encoder.pkl")),
                 "term": joblib.load(require_file(V4_ROOT / "loan_term" / "hist_gradient_boosting.pkl")),
+                "rate": joblib.load(require_file(V4_ROOT / "interest_rate" / "catboost_interest_rate.pkl")),
             }
         else:
             raise ValueError(f"Unsupported model option: {model_name}")
@@ -255,6 +259,14 @@ def predict_term_months(model_name: ModelName, model_bundle, features: pd.DataFr
     else:
         raw_term = safe_scalar(model_bundle["term"].predict(original_features(features)))
     return clean_term_months(raw_term, model_name)
+
+
+def predict_interest_rate(model_name: ModelName, model_bundle, features: pd.DataFrame) -> float:
+    if model_name in {"fast_linear", "smart_tree"}:
+        raw_rate = safe_scalar(model_bundle["rate"].predict(features))
+    else:
+        raw_rate = safe_scalar(model_bundle["rate"].predict(original_features(features)))
+    return round(float(np.clip(raw_rate, 0.0, 20.0)), 2)
 
 
 def shap_module():
@@ -389,7 +401,7 @@ def health():
         "default_model": "v4_stacked",
         "model_options": list(MODEL_OPTIONS),
         "availability": available,
-        "targets": ["loan_amount", "loan_term"],
+        "targets": ["loan_amount", "loan_term", "interest_rate"],
     }
 
 
@@ -402,6 +414,7 @@ def predict(application: LoanApplication):
         amount_log_prediction = predict_amount_log(application.model_selection, model_bundle, features)
         estimated_amount = clean_amount(amount_log_prediction)
         estimated_term_months = predict_term_months(application.model_selection, model_bundle, features)
+        estimated_interest_rate = predict_interest_rate(application.model_selection, model_bundle, features)
         try:
             shap_explanation = explain_prediction(application.model_selection, model_bundle, features)
         except RuntimeError as shap_error:
@@ -421,6 +434,7 @@ def predict(application: LoanApplication):
             "estimated_loan_amount": estimated_amount,
             "estimated_loan_term_months": estimated_term_months,
             "estimated_loan_term_years": round(estimated_term_months / 12, 1),
+            "estimated_interest_rate": estimated_interest_rate,
             "shap_explanation": shap_explanation,
             "currency": "USD",
             "disclaimer": (

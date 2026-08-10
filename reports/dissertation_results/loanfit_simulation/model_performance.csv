@@ -1,0 +1,9 @@
+model_key,model_label,model_family,target,rmse,mae,r2,mape_pct
+v4_stacked,Original v4 stacked model,CatBoost + XGBoost mixture,loan_amount,84660.6976486866,60571.04919612999,0.43285302669419523,28.63744328754
+v4_stacked,Original v4 stacked model,CatBoost + XGBoost mixture,interest_rate,0.3216497506642999,0.2413774783078169,0.5084363177200233,
+v4_catboost,Original v4 CatBoost model,CatBoost,loan_amount,84261.34172544732,60447.27250259537,0.4381910243535465,28.737185408013648
+v4_catboost,Original v4 CatBoost model,CatBoost,interest_rate,0.3216497506642999,0.2413774783078169,0.5084363177200233,
+smart_tree,Stable smart tree model,Scikit-learn histogram gradient boosting,loan_amount,90374.23177628564,64921.74291806519,0.3537193248389703,31.43552902013507
+smart_tree,Stable smart tree model,Scikit-learn histogram gradient boosting,interest_rate,0.32487055874126547,0.24252433815292718,0.4985425805407926,
+fast_linear,Stable simple model,Linear-style baseline,loan_amount,89043.36379650087,65663.6271269354,0.37261367419883173,31.821806323086772
+fast_linear,Stable simple model,Linear-style baseline,interest_rate,0.3454527636648039,0.2633645449236385,0.4329900323414194,

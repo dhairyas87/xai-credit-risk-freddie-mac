@@ -1,0 +1,161 @@
+model_key,model_label,target,feature,feature_label,mean_absolute_impact,mean_signed_impact,unit
+v4_stacked,Original v4 stacked model,loan_amount,credit_score,Credit score,10381.99745109639,340.02236165702493,USD
+v4_stacked,Original v4 stacked model,interest_rate,credit_score,Credit score,0.12772870367061442,0.0043988817711857996,percentage points
+v4_stacked,Original v4 stacked model,loan_amount,dti,Debt-to-income ratio,6440.319850183674,-1385.6233601965116,USD
+v4_stacked,Original v4 stacked model,interest_rate,dti,Debt-to-income ratio,0.027839961343199004,-1.6432316402748004e-05,percentage points
+v4_stacked,Original v4 stacked model,loan_amount,num_borrowers,Number of borrowers,15758.414507016023,69.89913235239898,USD
+v4_stacked,Original v4 stacked model,interest_rate,num_borrowers,Number of borrowers,0.016851616033425134,0.0007407161115384494,percentage points
+v4_stacked,Original v4 stacked model,loan_amount,num_units,Property units,2990.8093563251023,-1050.3652213968169,USD
+v4_stacked,Original v4 stacked model,interest_rate,num_units,Property units,0.008505737539493796,0.0004823242604193275,percentage points
+v4_stacked,Original v4 stacked model,loan_amount,ltv,Loan-to-value ratio,45081.23137456939,19861.71107626014,USD
+v4_stacked,Original v4 stacked model,interest_rate,ltv,Loan-to-value ratio,0.06086743758369626,-0.030137939738611955,percentage points
+v4_stacked,Original v4 stacked model,loan_amount,cltv,Combined loan-to-value ratio,45540.21537567637,29731.856728451203,USD
+v4_stacked,Original v4 stacked model,interest_rate,cltv,Combined loan-to-value ratio,0.11261565956463077,0.03440116471629859,percentage points
+v4_stacked,Original v4 stacked model,loan_amount,mortgage_insurance_pct,Mortgage insurance,1795.0222946598158,-1397.509298976489,USD
+v4_stacked,Original v4 stacked model,interest_rate,mortgage_insurance_pct,Mortgage insurance,0.05290459500290369,-0.04418774979105497,percentage points
+v4_stacked,Original v4 stacked model,loan_amount,quarter_num,Origination quarter,635.2475879819632,-85.31141524575482,USD
+v4_stacked,Original v4 stacked model,interest_rate,quarter_num,Origination quarter,0.03057144239106917,-0.0009644074602248217,percentage points
+v4_stacked,Original v4 stacked model,loan_amount,first_time_homebuyer_indicator,First-time homebuyer,6566.492462880959,940.7528594675969,USD
+v4_stacked,Original v4 stacked model,interest_rate,first_time_homebuyer_indicator,First-time homebuyer,0.00298867181291671,0.00044050409826891604,percentage points
+v4_stacked,Original v4 stacked model,loan_amount,occupancy_status,Occupancy,14894.773666993126,51.231713703822486,USD
+v4_stacked,Original v4 stacked model,interest_rate,occupancy_status,Occupancy,0.10984203745670268,0.011697187340137413,percentage points
+v4_stacked,Original v4 stacked model,loan_amount,property_type,Property type,18019.61254191426,-647.264242872606,USD
+v4_stacked,Original v4 stacked model,interest_rate,property_type,Property type,0.02362467292930215,0.00480850916560677,percentage points
+v4_stacked,Original v4 stacked model,loan_amount,property_state,Property state,38606.85543863069,-29094.358458068345,USD
+v4_stacked,Original v4 stacked model,interest_rate,property_state,Property state,0.0487014446255962,0.00860019174299475,percentage points
+v4_stacked,Original v4 stacked model,loan_amount,msa,Metro area,57063.89546941583,-28283.023026573224,USD
+v4_stacked,Original v4 stacked model,interest_rate,msa,Metro area,0.033594068018557514,0.01072814724553159,percentage points
+v4_stacked,Original v4 stacked model,loan_amount,channel,Origination channel,7082.307898044701,1093.7621402604586,USD
+v4_stacked,Original v4 stacked model,interest_rate,channel,Origination channel,0.03589110124180494,0.009219128128138736,percentage points
+v4_stacked,Original v4 stacked model,loan_amount,loan_purpose,Loan purpose,10395.096341213595,1223.0602743590175,USD
+v4_stacked,Original v4 stacked model,interest_rate,loan_purpose,Loan purpose,0.07320071779053729,0.013079415286321705,percentage points
+v4_stacked,Original v4 stacked model,loan_amount,program_indicator,Program indicator,6076.761311682677,-271.18982880725173,USD
+v4_stacked,Original v4 stacked model,interest_rate,program_indicator,Program indicator,0.0183659924486803,-0.006950403498124155,percentage points
+v4_stacked,Original v4 stacked model,loan_amount,property_valuation_method,Property valuation method,772.1192724715906,-479.62665775667097,USD
+v4_stacked,Original v4 stacked model,interest_rate,property_valuation_method,Property valuation method,0.002802053382207174,0.0014360223567013572,percentage points
+v4_stacked,Original v4 stacked model,loan_amount,interest_only_indicator,Interest-only indicator,0.0,0.0,USD
+v4_stacked,Original v4 stacked model,interest_rate,interest_only_indicator,Interest-only indicator,0.0,0.0,percentage points
+v4_stacked,Original v4 stacked model,loan_amount,mortgage_insurance_cancellation_indicator,Mortgage insurance cancellation,2392.065862528824,-50.74943182341825,USD
+v4_stacked,Original v4 stacked model,interest_rate,mortgage_insurance_cancellation_indicator,Mortgage insurance cancellation,0.04226231320348185,-0.03599374576988287,percentage points
+v4_stacked,Original v4 stacked model,loan_amount,quarter,Origination quarter,1612.6992250962373,-442.97658827139844,USD
+v4_stacked,Original v4 stacked model,interest_rate,quarter,Origination quarter,0.17207191640191055,0.0012188642065664131,percentage points
+v4_catboost,Original v4 CatBoost model,loan_amount,credit_score,Credit score,10706.285589665551,27.287288355666654,USD
+v4_catboost,Original v4 CatBoost model,interest_rate,credit_score,Credit score,0.13266535350037956,0.004983163895205297,percentage points
+v4_catboost,Original v4 CatBoost model,loan_amount,dti,Debt-to-income ratio,6504.121680350813,-1423.225088706031,USD
+v4_catboost,Original v4 CatBoost model,interest_rate,dti,Debt-to-income ratio,0.03404954523189351,0.002034854345807846,percentage points
+v4_catboost,Original v4 CatBoost model,loan_amount,num_borrowers,Number of borrowers,15227.841658461215,-383.98565356955515,USD
+v4_catboost,Original v4 CatBoost model,interest_rate,num_borrowers,Number of borrowers,0.015945641128385916,0.0015898655038502295,percentage points
+v4_catboost,Original v4 CatBoost model,loan_amount,num_units,Property units,3154.1236904306065,-151.0034685410998,USD
+v4_catboost,Original v4 CatBoost model,interest_rate,num_units,Property units,0.007121909215416348,-0.0009015040636581207,percentage points
+v4_catboost,Original v4 CatBoost model,loan_amount,ltv,Loan-to-value ratio,45642.50477269416,31902.926655565567,USD
+v4_catboost,Original v4 CatBoost model,interest_rate,ltv,Loan-to-value ratio,0.05966374558864263,-0.02363806477716557,percentage points
+v4_catboost,Original v4 CatBoost model,loan_amount,cltv,Combined loan-to-value ratio,59569.00150312356,46413.49094850592,USD
+v4_catboost,Original v4 CatBoost model,interest_rate,cltv,Combined loan-to-value ratio,0.11316391646264369,0.025295483461709786,percentage points
+v4_catboost,Original v4 CatBoost model,loan_amount,mortgage_insurance_pct,Mortgage insurance,2248.5593238029464,-1610.1378904867188,USD
+v4_catboost,Original v4 CatBoost model,interest_rate,mortgage_insurance_pct,Mortgage insurance,0.05270221843905318,-0.04320979759576474,percentage points
+v4_catboost,Original v4 CatBoost model,loan_amount,quarter_num,Origination quarter,558.0627953268181,-121.77678513798492,USD
+v4_catboost,Original v4 CatBoost model,interest_rate,quarter_num,Origination quarter,0.02868785141700518,-0.0008695359050637822,percentage points
+v4_catboost,Original v4 CatBoost model,loan_amount,first_time_homebuyer_indicator,First-time homebuyer,6331.490135017228,1171.4414464453864,USD
+v4_catboost,Original v4 CatBoost model,interest_rate,first_time_homebuyer_indicator,First-time homebuyer,0.0036754398720232192,0.0005017649968904303,percentage points
+v4_catboost,Original v4 CatBoost model,loan_amount,occupancy_status,Occupancy,14341.033341535735,409.2253194539079,USD
+v4_catboost,Original v4 CatBoost model,interest_rate,occupancy_status,Occupancy,0.11545823825097463,0.009107589921669735,percentage points
+v4_catboost,Original v4 CatBoost model,loan_amount,property_type,Property type,20892.862990675912,-166.13322828435,USD
+v4_catboost,Original v4 CatBoost model,interest_rate,property_type,Property type,0.02332865630129221,0.0020387992379381934,percentage points
+v4_catboost,Original v4 CatBoost model,loan_amount,property_state,Property state,53695.31982195065,-46675.29468293052,USD
+v4_catboost,Original v4 CatBoost model,interest_rate,property_state,Property state,0.04767413920922256,0.009209249489413951,percentage points
+v4_catboost,Original v4 CatBoost model,loan_amount,msa,Metro area,63924.52424758006,-49796.37057395979,USD
+v4_catboost,Original v4 CatBoost model,interest_rate,msa,Metro area,0.0366563172555177,0.010197432386490323,percentage points
+v4_catboost,Original v4 CatBoost model,loan_amount,channel,Origination channel,5897.553665534114,898.1357641625732,USD
+v4_catboost,Original v4 CatBoost model,interest_rate,channel,Origination channel,0.03126523138907977,0.0009501592118615232,percentage points
+v4_catboost,Original v4 CatBoost model,loan_amount,loan_purpose,Loan purpose,9307.493641558185,1256.4035167190173,USD
+v4_catboost,Original v4 CatBoost model,interest_rate,loan_purpose,Loan purpose,0.06780993193832778,0.007307411751147486,percentage points
+v4_catboost,Original v4 CatBoost model,loan_amount,program_indicator,Program indicator,6706.343760676971,-1478.7223989165293,USD
+v4_catboost,Original v4 CatBoost model,interest_rate,program_indicator,Program indicator,0.024805053284959515,-0.00028819639671460914,percentage points
+v4_catboost,Original v4 CatBoost model,loan_amount,property_valuation_method,Property valuation method,1000.5663751538126,-62.76863230298707,USD
+v4_catboost,Original v4 CatBoost model,interest_rate,property_valuation_method,Property valuation method,0.0038098358432203955,-0.00025691502753617536,percentage points
+v4_catboost,Original v4 CatBoost model,loan_amount,interest_only_indicator,Interest-only indicator,0.0,0.0,USD
+v4_catboost,Original v4 CatBoost model,interest_rate,interest_only_indicator,Interest-only indicator,0.0,0.0,percentage points
+v4_catboost,Original v4 CatBoost model,loan_amount,mortgage_insurance_cancellation_indicator,Mortgage insurance cancellation,3881.99220332142,9.94132609161085,USD
+v4_catboost,Original v4 CatBoost model,interest_rate,mortgage_insurance_cancellation_indicator,Mortgage insurance cancellation,0.049619020463703714,-0.0443693251795587,percentage points
+v4_catboost,Original v4 CatBoost model,loan_amount,quarter,Origination quarter,1977.6061853789515,-505.66994334316854,USD
+v4_catboost,Original v4 CatBoost model,interest_rate,quarter,Origination quarter,0.19236586122966623,0.002488233998604524,percentage points
+smart_tree,Stable smart tree model,loan_amount,credit_score,Credit score,15670.966780423167,-368.53884307510066,USD
+smart_tree,Stable smart tree model,interest_rate,credit_score,Credit score,0.1390626571520856,-0.000684260776306811,percentage points
+smart_tree,Stable smart tree model,loan_amount,dti,Debt-to-income ratio,9911.410648705989,-2476.5509337900116,USD
+smart_tree,Stable smart tree model,interest_rate,dti,Debt-to-income ratio,0.03127442716442719,0.0006133556792273342,percentage points
+smart_tree,Stable smart tree model,loan_amount,num_borrowers,Number of borrowers,15730.139150159646,1306.7291505697717,USD
+smart_tree,Stable smart tree model,interest_rate,num_borrowers,Number of borrowers,0.016508459171406552,0.001652770681581428,percentage points
+smart_tree,Stable smart tree model,loan_amount,num_units,Property units,1580.0973137651401,-328.685967506385,USD
+smart_tree,Stable smart tree model,interest_rate,num_units,Property units,0.008011476877303917,-0.00010522657122026639,percentage points
+smart_tree,Stable smart tree model,loan_amount,ltv,Loan-to-value ratio,14801.313252116921,9070.226432803518,USD
+smart_tree,Stable smart tree model,interest_rate,ltv,Loan-to-value ratio,0.058874488148531925,-0.003497564124732807,percentage points
+smart_tree,Stable smart tree model,loan_amount,cltv,Combined loan-to-value ratio,50527.27006604544,13142.597823799188,USD
+smart_tree,Stable smart tree model,interest_rate,cltv,Combined loan-to-value ratio,0.07818692094741723,0.009509265216167668,percentage points
+smart_tree,Stable smart tree model,loan_amount,mortgage_insurance_pct,Mortgage insurance,2873.9464943252974,-1711.0155575624415,USD
+smart_tree,Stable smart tree model,interest_rate,mortgage_insurance_pct,Mortgage insurance,0.0335661241537693,-0.014291560429659556,percentage points
+smart_tree,Stable smart tree model,loan_amount,quarter_num,Origination quarter,2999.536852365462,-16.662193160264845,USD
+smart_tree,Stable smart tree model,interest_rate,quarter_num,Origination quarter,0.20801116964985525,-0.004018484504018997,percentage points
+smart_tree,Stable smart tree model,loan_amount,first_time_homebuyer_indicator,First-time homebuyer,4743.686654866243,871.821845846708,USD
+smart_tree,Stable smart tree model,interest_rate,first_time_homebuyer_indicator,First-time homebuyer,0.002129049913303094,-0.0006517355673415419,percentage points
+smart_tree,Stable smart tree model,loan_amount,occupancy_status,Occupancy,11109.460156226512,-171.86883110405105,USD
+smart_tree,Stable smart tree model,interest_rate,occupancy_status,Occupancy,0.10130371736507415,-0.0014381783433017028,percentage points
+smart_tree,Stable smart tree model,loan_amount,property_type,Property type,19489.488331331817,-1558.3961560910145,USD
+smart_tree,Stable smart tree model,interest_rate,property_type,Property type,0.017182564970337447,0.0032259974761526125,percentage points
+smart_tree,Stable smart tree model,loan_amount,property_state,Property state,60084.52763234436,-11398.849778471764,USD
+smart_tree,Stable smart tree model,interest_rate,property_state,Property state,0.0417163400944054,0.0015791199273684996,percentage points
+smart_tree,Stable smart tree model,loan_amount,msa,Metro area,37912.23444277262,-13772.957799067564,USD
+smart_tree,Stable smart tree model,interest_rate,msa,Metro area,0.0256597830189733,0.0017323692241240085,percentage points
+smart_tree,Stable smart tree model,loan_amount,channel,Origination channel,7843.610537208781,144.2119964548155,USD
+smart_tree,Stable smart tree model,interest_rate,channel,Origination channel,0.01706294799483096,-0.0010127625585328796,percentage points
+smart_tree,Stable smart tree model,loan_amount,loan_purpose,Loan purpose,6739.038934697261,-70.09497948731854,USD
+smart_tree,Stable smart tree model,interest_rate,loan_purpose,Loan purpose,0.06584751124423914,0.010993860367950085,percentage points
+smart_tree,Stable smart tree model,loan_amount,program_indicator,Program indicator,5141.64396036797,-498.21645373229853,USD
+smart_tree,Stable smart tree model,interest_rate,program_indicator,Program indicator,0.017621442614478178,0.00795872680755613,percentage points
+smart_tree,Stable smart tree model,loan_amount,property_valuation_method,Property valuation method,635.170290290302,-367.09231152328755,USD
+smart_tree,Stable smart tree model,interest_rate,property_valuation_method,Property valuation method,0.0026894845303604346,-0.0013402996221416386,percentage points
+smart_tree,Stable smart tree model,loan_amount,interest_only_indicator,Interest-only indicator,0.0,0.0,USD
+smart_tree,Stable smart tree model,interest_rate,interest_only_indicator,Interest-only indicator,0.0,0.0,percentage points
+smart_tree,Stable smart tree model,loan_amount,mortgage_insurance_cancellation_indicator,Mortgage insurance cancellation,1073.117047764846,61.24311907791319,USD
+smart_tree,Stable smart tree model,interest_rate,mortgage_insurance_cancellation_indicator,Mortgage insurance cancellation,0.0023264957645422173,0.00018972300448745206,percentage points
+smart_tree,Stable smart tree model,loan_amount,quarter,Origination quarter,0.0,0.0,USD
+smart_tree,Stable smart tree model,interest_rate,quarter,Origination quarter,0.0,0.0,percentage points
+fast_linear,Stable simple model,loan_amount,credit_score,Credit score,11836.037611073352,-333.82192369609936,USD
+fast_linear,Stable simple model,interest_rate,credit_score,Credit score,0.14304962199148571,-4.4408920985006264e-17,percentage points
+fast_linear,Stable simple model,loan_amount,dti,Debt-to-income ratio,6787.906816445239,-453.8420973313947,USD
+fast_linear,Stable simple model,interest_rate,dti,Debt-to-income ratio,0.024295809731053077,2.590520390792032e-17,percentage points
+fast_linear,Stable simple model,loan_amount,num_borrowers,Number of borrowers,19241.915773899844,1246.4974275036604,USD
+fast_linear,Stable simple model,interest_rate,num_borrowers,Number of borrowers,0.017005567697136664,-3.7007434154171884e-18,percentage points
+fast_linear,Stable simple model,loan_amount,num_units,Property units,3410.000431285917,-17.88109654391519,USD
+fast_linear,Stable simple model,interest_rate,num_units,Property units,0.00750538575785841,-7.401486830834377e-18,percentage points
+fast_linear,Stable simple model,loan_amount,ltv,Loan-to-value ratio,6912.0001373076475,1559.2991824275362,USD
+fast_linear,Stable simple model,interest_rate,ltv,Loan-to-value ratio,0.007943410016551956,-4.070817756958907e-17,percentage points
+fast_linear,Stable simple model,loan_amount,cltv,Combined loan-to-value ratio,72835.47261730839,10391.818385594106,USD
+fast_linear,Stable simple model,interest_rate,cltv,Combined loan-to-value ratio,0.11997667667547615,1.1102230246251566e-17,percentage points
+fast_linear,Stable simple model,loan_amount,mortgage_insurance_pct,Mortgage insurance,8574.851954473665,1061.431234837739,USD
+fast_linear,Stable simple model,interest_rate,mortgage_insurance_pct,Mortgage insurance,0.012025449236034746,-7.401486830834377e-18,percentage points
+fast_linear,Stable simple model,loan_amount,quarter_num,Origination quarter,322.39580031130174,-28.031260596689147,USD
+fast_linear,Stable simple model,interest_rate,quarter_num,Origination quarter,0.18353082376279892,-7.401486830834377e-18,percentage points
+fast_linear,Stable simple model,loan_amount,first_time_homebuyer_indicator,First-time homebuyer,8042.686092601679,1008.9023072114907,USD
+fast_linear,Stable simple model,interest_rate,first_time_homebuyer_indicator,First-time homebuyer,0.004979204086857858,-7.401486830834377e-18,percentage points
+fast_linear,Stable simple model,loan_amount,occupancy_status,Occupancy,11979.305060715453,985.9617408951398,USD
+fast_linear,Stable simple model,interest_rate,occupancy_status,Occupancy,0.10325746739970533,1.4802973661668754e-17,percentage points
+fast_linear,Stable simple model,loan_amount,property_type,Property type,25740.55889291577,1708.028809024024,USD
+fast_linear,Stable simple model,interest_rate,property_type,Property type,0.023285934810794755,-2.590520390792032e-17,percentage points
+fast_linear,Stable simple model,loan_amount,property_state,Property state,73820.791974447,-1973.2828692380067,USD
+fast_linear,Stable simple model,interest_rate,property_state,Property state,0.04976689873556524,-1.1102230246251566e-17,percentage points
+fast_linear,Stable simple model,loan_amount,msa,Metro area,47540.47685449381,2852.0332022155676,USD
+fast_linear,Stable simple model,interest_rate,msa,Metro area,0.04152394172832617,-2.960594732333751e-17,percentage points
+fast_linear,Stable simple model,loan_amount,channel,Origination channel,11071.011424694858,-1636.7050256621797,USD
+fast_linear,Stable simple model,interest_rate,channel,Origination channel,0.01917588300404416,-2.2204460492503132e-17,percentage points
+fast_linear,Stable simple model,loan_amount,loan_purpose,Loan purpose,4251.998911765108,111.24932798811861,USD
+fast_linear,Stable simple model,interest_rate,loan_purpose,Loan purpose,0.04946525987121667,-2.2204460492503132e-17,percentage points
+fast_linear,Stable simple model,loan_amount,program_indicator,Program indicator,10545.88308743004,136.62270389667367,USD
+fast_linear,Stable simple model,interest_rate,program_indicator,Program indicator,0.006992068890414046,0.0,percentage points
+fast_linear,Stable simple model,loan_amount,property_valuation_method,Property valuation method,1613.8182662182996,26.611719236822683,USD
+fast_linear,Stable simple model,interest_rate,property_valuation_method,Property valuation method,0.003958759492668699,7.401486830834377e-18,percentage points
+fast_linear,Stable simple model,loan_amount,interest_only_indicator,Interest-only indicator,0.0,0.0,USD
+fast_linear,Stable simple model,interest_rate,interest_only_indicator,Interest-only indicator,0.0,0.0,percentage points
+fast_linear,Stable simple model,loan_amount,mortgage_insurance_cancellation_indicator,Mortgage insurance cancellation,4460.672531333576,310.53990858058074,USD
+fast_linear,Stable simple model,interest_rate,mortgage_insurance_cancellation_indicator,Mortgage insurance cancellation,0.016458127341556612,0.0,percentage points
+fast_linear,Stable simple model,loan_amount,quarter,Origination quarter,2762.8116857582218,-216.91590724564497,USD
+fast_linear,Stable simple model,interest_rate,quarter,Origination quarter,0.06821072622360708,1.850371707708594e-17,percentage points

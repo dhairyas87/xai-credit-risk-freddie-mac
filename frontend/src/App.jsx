@@ -348,6 +348,17 @@ export default function App() {
 
               <div className="result-block">
                 <div className="result-icon">
+                  <LockKeyhole size={22} />
+                </div>
+                <div>
+                  <p>Estimated Interest Rate</p>
+                  <strong>{result.estimated_interest_rate}%</strong>
+                  <small>Model-estimated note rate</small>
+                </div>
+              </div>
+
+              <div className="result-block">
+                <div className="result-icon">
                   <Sparkles size={22} />
                 </div>
                 <div>

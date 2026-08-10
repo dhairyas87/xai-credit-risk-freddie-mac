@@ -1,15 +1,15 @@
 # LoanFit UI Model Summary
 
 The LoanFit interface exposes four model choices. All four use the same UI
-input profile and return the same two business outputs: estimated loan amount
-and estimated loan term.
+input profile and return the same business outputs: estimated loan amount,
+estimated loan term, and estimated interest rate.
 
 | UI name | Version | Model type | What it predicts | Explanation |
 |---|---|---|---|---|
-| Original mixture | v4 | CatBoost + XGBoost stacked ensemble | Loan amount + loan term | This is the advanced research-style loan amount model. CatBoost handles categorical underwriting features directly, XGBoost learns from encoded categorical features, and a Ridge meta-model blends both predictions. The loan term is supplied by the v4 term classifier. |
-| Original CatBoost | v4 | CatBoost | Loan amount + loan term | This is the direct CatBoost lending model. It is easier to explain than the stacked ensemble because one model produces the loan amount prediction. The loan term is supplied by the v4 term classifier. |
-| Stable smart model | v5 | Histogram gradient boosting | Loan amount + loan term | This is a UI-safe non-linear comparison model. It captures non-linear relationships while avoiding fragile scikit-learn `ColumnTransformer` pickle artifacts. |
-| Stable simple model | v5 | Linear-style baseline | Loan amount + loan term | This is the simplest comparison model. It is useful as a baseline because it is faster and easier to explain, but it usually captures fewer non-linear patterns than tree or ensemble models. |
+| Original mixture | v4 | CatBoost + XGBoost stacked ensemble | Loan amount + loan term + interest rate | This is the advanced research-style loan amount model. CatBoost handles categorical underwriting features directly, XGBoost learns from encoded categorical features, and a Ridge meta-model blends both predictions. The loan term is supplied by the v4 term classifier and interest rate by the v4 CatBoost rate model. |
+| Original CatBoost | v4 | CatBoost | Loan amount + loan term + interest rate | This is the direct CatBoost lending model. It is easier to explain than the stacked ensemble because one model produces the loan amount prediction. The loan term is supplied by the v4 term classifier and interest rate by the v4 CatBoost rate model. |
+| Stable smart model | v5 | Histogram gradient boosting | Loan amount + loan term + interest rate | This is a UI-safe non-linear comparison model. It captures non-linear relationships while avoiding fragile scikit-learn `ColumnTransformer` pickle artifacts. |
+| Stable simple model | v5 | Linear-style baseline | Loan amount + loan term + interest rate | This is the simplest comparison model. It is useful as a baseline because it is faster and easier to explain, but it usually captures fewer non-linear patterns than tree or ensemble models. |
 
 ## SHAP explanations
 
